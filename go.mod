@@ -1,4 +1,4 @@
-module github.com/bennypowers/tree-sitter-handlebars
+module bennypowers.dev/tree-sitter-handlebars
 
 go 1.22
 
