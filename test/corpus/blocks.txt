@@ -1,0 +1,172 @@
+================================================================================
+Basic block
+================================================================================
+{{#if condition}}content{{/if}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Block with else
+================================================================================
+{{#if cond}}then{{else}}otherwise{{/if}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (else_block)
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Block with chained else if
+================================================================================
+{{#if a}}first{{else if b}}second{{else}}third{{/if}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (else_block
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (else_block)
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Nested blocks
+================================================================================
+{{#each items}}{{#if active}}yes{{/if}}{{/each}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (block
+      (block_open
+        (path_expression
+          (identifier))
+        (path_expression
+          (identifier)))
+      (text)
+      (block_close
+        (path_expression
+          (identifier))))
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Block with args and hash
+================================================================================
+{{#helper arg key="val"}}content{{/helper}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier))
+      (hash_pair
+        (identifier)
+        (string_literal)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Block with params
+================================================================================
+{{#each items as |item index|}}{{item}}{{/each}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier))
+      (block_params
+        (identifier)
+        (identifier)))
+    (expression
+      (path_expression
+        (identifier)))
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Block with whitespace control
+================================================================================
+{{~#if cond~}}content{{~/if~}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+In-tag expression
+================================================================================
+<my-element {{#if active}}class="active"{{/if}}>
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier))))
+  (text))

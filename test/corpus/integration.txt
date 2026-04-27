@@ -1,0 +1,471 @@
+================================================================================
+HTML with expressions in attributes
+================================================================================
+<div class="{{className}}" data-id="{{id}}">
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (expression
+    (path_expression
+      (identifier)))
+  (text)
+  (expression
+    (path_expression
+      (identifier)))
+  (text))
+
+================================================================================
+Multiple expressions no text between
+================================================================================
+{{foo}}{{bar}}
+--------------------------------------------------------------------------------
+
+(template
+  (expression
+    (path_expression
+      (identifier)))
+  (expression
+    (path_expression
+      (identifier))))
+
+================================================================================
+Complex real-world template
+================================================================================
+<ul>
+  {{#each items as |item idx|}}
+    <li class="{{if item.active "active" "inactive"}}">
+      {{item.name}}
+    </li>
+  {{/each}}
+</ul>
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier))
+      (block_params
+        (identifier)
+        (identifier)))
+    (text)
+    (expression
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)
+        (identifier))
+      (string_literal)
+      (string_literal))
+    (text)
+    (expression
+      (path_expression
+        (identifier)
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier))))
+  (text))
+
+================================================================================
+Single open brace in text
+================================================================================
+This has a { brace
+--------------------------------------------------------------------------------
+
+(template
+  (text))
+
+================================================================================
+Text only
+================================================================================
+Just plain text
+--------------------------------------------------------------------------------
+
+(template
+  (text))
+
+================================================================================
+Empty template
+================================================================================
+
+--------------------------------------------------------------------------------
+
+(template)
+
+================================================================================
+Deeply nested blocks
+================================================================================
+{{#a}}{{#b}}{{#c}}inner{{/c}}{{/b}}{{/a}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier)))
+    (block
+      (block_open
+        (path_expression
+          (identifier)))
+      (block
+        (block_open
+          (path_expression
+            (identifier)))
+        (text)
+        (block_close
+          (path_expression
+            (identifier))))
+      (block_close
+        (path_expression
+          (identifier))))
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Parent path in nested block
+================================================================================
+{{#each items}}{{../title}}{{/each}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (expression
+      (path_expression
+        (identifier)))
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Raw expression with whitespace control
+================================================================================
+{{{~content~}}}
+--------------------------------------------------------------------------------
+
+(template
+  (raw_expression
+    (path_expression
+      (identifier))))
+
+================================================================================
+Block with only expressions no text
+================================================================================
+{{#wrapper}}{{content}}{{/wrapper}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier)))
+    (expression
+      (path_expression
+        (identifier)))
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Multiple hash pairs
+================================================================================
+{{helper a="1" b="2" c="3"}}
+--------------------------------------------------------------------------------
+
+(template
+  (expression
+    (path_expression
+      (identifier))
+    (hash_pair
+      (identifier)
+      (string_literal))
+    (hash_pair
+      (identifier)
+      (string_literal))
+    (hash_pair
+      (identifier)
+      (string_literal))))
+
+================================================================================
+Hash with various value types
+================================================================================
+{{helper str="val" num=42 bool=true path=var.name sub=(helper)}}
+--------------------------------------------------------------------------------
+
+(template
+  (expression
+    (path_expression
+      (identifier))
+    (hash_pair
+      (identifier)
+      (string_literal))
+    (hash_pair
+      (identifier)
+      (number_literal))
+    (hash_pair
+      (identifier)
+      (boolean_literal))
+    (hash_pair
+      (identifier)
+      (path_expression
+        (identifier)
+        (identifier)))
+    (hash_pair
+      (identifier)
+      (subexpression
+        (path_expression
+          (identifier))))))
+
+================================================================================
+Partial with context and hash
+================================================================================
+{{> userCard currentUser class="highlighted" id=42}}
+--------------------------------------------------------------------------------
+
+(template
+  (partial
+    (path_expression
+      (identifier))
+    (path_expression
+      (identifier))
+    (hash_pair
+      (identifier)
+      (string_literal))
+    (hash_pair
+      (identifier)
+      (number_literal))))
+
+================================================================================
+Else if with hash args
+================================================================================
+{{#if a}}one{{else if b key="val"}}two{{/if}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (else_block
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier))
+      (hash_pair
+        (identifier)
+        (string_literal)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Raw block with handlebars-looking content
+================================================================================
+{{{{raw}}}}{{{triple}}} and {{double}}{{{{/raw}}}}
+--------------------------------------------------------------------------------
+
+(template
+  (raw_block
+    (raw_block_open
+      (identifier))
+    (raw_block_content)
+    (raw_block_close
+      (identifier))))
+
+================================================================================
+Comment between HTML tags
+================================================================================
+<div>{{! hidden comment }}<span>visible</span></div>
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (comment)
+  (text))
+
+================================================================================
+Adjacent blocks no whitespace
+================================================================================
+{{#if a}}x{{/if}}{{#if b}}y{{/if}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier))))
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Expression inside script tag
+================================================================================
+<script>var x = "{{value}}";</script>
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (expression
+    (path_expression
+      (identifier)))
+  (text))
+
+================================================================================
+Expression inside style tag
+================================================================================
+<style>.foo { color: {{color}}; }</style>
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (expression
+    (path_expression
+      (identifier)))
+  (text))
+
+================================================================================
+Block params with complex body
+================================================================================
+{{#each people as |person idx|}}
+  <div data-index="{{idx}}">
+    {{person.firstName}} {{person.lastName}}
+  </div>
+{{/each}}
+--------------------------------------------------------------------------------
+
+(template
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier))
+      (block_params
+        (identifier)
+        (identifier)))
+    (text)
+    (expression
+      (path_expression
+        (identifier)))
+    (text)
+    (expression
+      (path_expression
+        (identifier)
+        (identifier)))
+    (text)
+    (expression
+      (path_expression
+        (identifier)
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier)))))
+
+================================================================================
+Multiple blocks and text interleaved
+================================================================================
+Hello {{firstName}}! {{#if premium}}Welcome back{{else}}Sign up{{/if}} today.
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (expression
+    (path_expression
+      (identifier)))
+  (text)
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (else_block)
+    (text)
+    (block_close
+      (path_expression
+        (identifier))))
+  (text))
+
+================================================================================
+Verification test case
+================================================================================
+<div {{#if active}}class="active"{{/if}} data-id="{{id}}">
+  {{#each items as |item|}}
+    <my-component name="{{item.name}}">
+      {{item.content}}
+    </my-component>
+  {{/each}}
+</div>
+--------------------------------------------------------------------------------
+
+(template
+  (text)
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier))))
+  (text)
+  (expression
+    (path_expression
+      (identifier)))
+  (text)
+  (block
+    (block_open
+      (path_expression
+        (identifier))
+      (path_expression
+        (identifier))
+      (block_params
+        (identifier)))
+    (text)
+    (expression
+      (path_expression
+        (identifier)
+        (identifier)))
+    (text)
+    (expression
+      (path_expression
+        (identifier)
+        (identifier)))
+    (text)
+    (block_close
+      (path_expression
+        (identifier))))
+  (text))

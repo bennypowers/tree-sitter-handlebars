@@ -1,0 +1,53 @@
+================================================================================
+Nested subexpressions
+================================================================================
+{{helper (outer (inner arg))}}
+--------------------------------------------------------------------------------
+
+(template
+  (expression
+    (path_expression
+      (identifier))
+    (subexpression
+      (path_expression
+        (identifier))
+      (subexpression
+        (path_expression
+          (identifier))
+        (path_expression
+          (identifier))))))
+
+================================================================================
+Subexpression with hash
+================================================================================
+{{helper (sub key="val")}}
+--------------------------------------------------------------------------------
+
+(template
+  (expression
+    (path_expression
+      (identifier))
+    (subexpression
+      (path_expression
+        (identifier))
+      (hash_pair
+        (identifier)
+        (string_literal)))))
+
+================================================================================
+Subexpression as hash value
+================================================================================
+{{helper key=(sub arg)}}
+--------------------------------------------------------------------------------
+
+(template
+  (expression
+    (path_expression
+      (identifier))
+    (hash_pair
+      (identifier)
+      (subexpression
+        (path_expression
+          (identifier))
+        (path_expression
+          (identifier))))))

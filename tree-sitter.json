@@ -1,0 +1,43 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "handlebars",
+      "camelcase": "Handlebars",
+      "title": "Handlebars",
+      "scope": "source.handlebars",
+      "file-types": [
+        "handlebars",
+        "hbs"
+      ],
+      "injection-regex": "^handlebars$",
+      "class-name": "TreeSitterHandlebars"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Handlebars is largely compatible with Mustache templates. In most cases it is possible to swap out Mustache with Handlebars and continue using your current templates.",
+    "authors": [
+      {
+        "name": "Benny Powers",
+        "email": "web@bennypowers.com",
+        "url": "https://bennypowers.dev"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/bennypowers/tree-sitter-handlebars",
+      "funding": ""
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "java": false,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}
